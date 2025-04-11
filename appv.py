@@ -9,7 +9,6 @@ from torch import nn
 from torchvision import models
 from waitress import serve
 from flask import Flask, send_file, render_template
-import os
 
 app = Flask(__name__)
 from multiprocessing import cpu_count
@@ -68,7 +67,10 @@ def serve_video():
     process_video(input_video, output_video, model)
     return send_file(output_video, mimetype='video/avi')
 
-if __name__ == "_main_":
+if __name__ == "__main__":
+    import os
     print("serveur en cours de demarrage...")
-    serve(app, host='0.0.0.0' , port=8000, threads=4, channel_timeout=60, num_processes=workers)
+    port = int(os.environ.get("port", 5000))
+    serve(app, host='0.0.0.0', port=port, threads=4 ,channel_timeout=60, )
+    
      # Utilise soit Waitress, soit app.run()
